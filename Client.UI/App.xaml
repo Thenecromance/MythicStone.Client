@@ -1,0 +1,46 @@
+﻿<Application x:Class="Client.UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:helpers="clr-namespace:Client.UI.Helpers"
+             xmlns:specialization="clr-namespace:Client.UI.Helpers.Specialization"
+             xmlns:valueToColorConverter="clr-namespace:Client.UI.Helpers.ValueToColorConverter"
+
+             Startup="OnStartUp"
+             Exit="OnExit"
+             DispatcherUnhandledException="OnDispatcherUnhandledException">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ThemesDictionary Theme="Dark" />
+                <ui:ControlsDictionary />
+
+                <ResourceDictionary Source="Controls/PlayerDetailCard.xaml" />
+                <ResourceDictionary Source="Controls/DungeonListShow.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+            <helpers:ThemeToIndexConverter x:Key="ThemeToIndexConverter" />
+            <helpers:PaneDisplayModeToIndexConverter x:Key="PaneDisplayModeToIndexConverter" />
+            <helpers:PercentageConverter x:Key="PercentageConverter" />
+            <helpers:IndexToClassNameConverter x:Key="IndexToClassNameConverter" />
+            <helpers:ShortCutConverter x:Key="ShortCutConverter" />
+            <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <helpers:ClassIndexToColorConverter x:Key="ClassIndexToColorConverter" />
+            <specialization:SpecializationToImageConverter x:Key="SpecializationToImageConverter" />
+            <specialization:IdToNameConverter x:Key="SpecializationIdToNameConverter" />
+
+            <helpers:DungeonConverter x:Key="DungeonConverter" />
+            <helpers:DungeonFinishStatus x:Key="DungeonFinishStatus" />
+            <helpers:DungeonTimerConverter x:Key="DungeonTimerConverter" />
+
+            <!--Color Converters-->
+            <valueToColorConverter:EquipmentToColorConverter x:Key="EquipmentToColorConverter" />
+            <valueToColorConverter:DungeonScoreToColorConverter x:Key="DungeonScoreToColorConverter" />
+
+            <!--Images-->
+            <helpers:LazyImageConverter x:Key="LazyImageConverter" />
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

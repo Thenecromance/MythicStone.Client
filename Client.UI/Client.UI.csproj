@@ -1,0 +1,230 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0-preview.2.25163.2" />
+    <PackageReference Include="NLog" Version="5.4.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
+    <PackageReference Include="WPF-UI" Version="4.0.2" />
+    <PackageReference Include="WPF-UI.Abstractions" Version="4.0.2" />
+    <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Banned.png" />
+    <None Remove="Assets\HomebackGround.png" />
+    <None Remove="Assets\Specializations\talentbg-death-knight-blood.jpg" />
+    <None Remove="Assets\Specializations\talentbg-death-knight-frost.jpg" />
+    <None Remove="Assets\Specializations\talentbg-death-knight-unholy.jpg" />
+    <None Remove="Assets\Specializations\talentbg-demon-hunter-havoc.jpg" />
+    <None Remove="Assets\Specializations\talentbg-demon-hunter-vengeance.jpg" />
+    <None Remove="Assets\Specializations\talentbg-druid-balance.jpg" />
+    <None Remove="Assets\Specializations\talentbg-druid-feral.jpg" />
+    <None Remove="Assets\Specializations\talentbg-druid-guardian.jpg" />
+    <None Remove="Assets\Specializations\talentbg-druid-restoration.jpg" />
+    <None Remove="Assets\Specializations\talentbg-evoker-augmentation.jpg" />
+    <None Remove="Assets\Specializations\talentbg-evoker-devastation.jpg" />
+    <None Remove="Assets\Specializations\talentbg-evoker-preservation.jpg" />
+    <None Remove="Assets\Specializations\talentbg-hunter-beast-mastery.jpg" />
+    <None Remove="Assets\Specializations\talentbg-hunter-marksmanship.jpg" />
+    <None Remove="Assets\Specializations\talentbg-hunter-survival.jpg" />
+    <None Remove="Assets\Specializations\talentbg-mage-arcane.jpg" />
+    <None Remove="Assets\Specializations\talentbg-mage-fire.jpg" />
+    <None Remove="Assets\Specializations\talentbg-mage-frost.jpg" />
+    <None Remove="Assets\Specializations\talentbg-monk-brewmaster.jpg" />
+    <None Remove="Assets\Specializations\talentbg-monk-mistweaver.jpg" />
+    <None Remove="Assets\Specializations\talentbg-monk-windwalker.jpg" />
+    <None Remove="Assets\Specializations\talentbg-paladin-holy.jpg" />
+    <None Remove="Assets\Specializations\talentbg-paladin-protection.jpg" />
+    <None Remove="Assets\Specializations\talentbg-paladin-retribution.jpg" />
+    <None Remove="Assets\Specializations\talentbg-priest-discipline.jpg" />
+    <None Remove="Assets\Specializations\talentbg-priest-holy.jpg" />
+    <None Remove="Assets\Specializations\talentbg-priest-shadow.jpg" />
+    <None Remove="Assets\Specializations\talentbg-rogue-assassination.jpg" />
+    <None Remove="Assets\Specializations\talentbg-rogue-outlaw.jpg" />
+    <None Remove="Assets\Specializations\talentbg-rogue-subtlety.jpg" />
+    <None Remove="Assets\Specializations\talentbg-shaman-elemental.jpg" />
+    <None Remove="Assets\Specializations\talentbg-shaman-enhancement.jpg" />
+    <None Remove="Assets\Specializations\talentbg-shaman-restoration.jpg" />
+    <None Remove="Assets\Specializations\talentbg-warlock-affliction.jpg" />
+    <None Remove="Assets\Specializations\talentbg-warlock-demonology.jpg" />
+    <None Remove="Assets\Specializations\talentbg-warlock-destruction.jpg" />
+    <None Remove="Assets\Specializations\talentbg-warrior-arms.jpg" />
+    <None Remove="Assets\Specializations\talentbg-warrior-fury.jpg" />
+    <None Remove="Assets\Specializations\talentbg-warrior-protection.jpg" />
+    <Resource Include="Assets\Banned.png" />
+    <Resource Include="Assets\main_page_bg.png" />
+    <None Remove="Assets\Class\DeathKnight.png" />
+    <Resource Include="Assets\Class\DeathKnight.png" />
+    <None Remove="Assets\Class\DemonHunter.png" />
+    <Resource Include="Assets\Class\DemonHunter.png" />
+    <None Remove="Assets\Class\Druid.png" />
+    <Resource Include="Assets\Class\Druid.png" />
+    <None Remove="Assets\Class\Evoker.png" />
+    <Resource Include="Assets\Class\Evoker.png" />
+    <None Remove="Assets\Class\Hunter.png" />
+    <Resource Include="Assets\Class\Hunter.png" />
+    <None Remove="Assets\Class\Mage.png" />
+    <Resource Include="Assets\Class\Mage.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Assets\Class\Monk.png" />
+    <Resource Include="Assets\Class\Monk.png" />
+    <None Remove="Assets\Class\Paladin.png" />
+    <Resource Include="Assets\Class\Paladin.png" />
+    <None Remove="Assets\Class\Priest.png" />
+    <Resource Include="Assets\Class\Priest.png" />
+    <None Remove="Assets\Class\Rogue.png" />
+    <Resource Include="Assets\Class\Rogue.png" />
+    <None Remove="Assets\Class\Shaman.png" />
+    <Resource Include="Assets\Class\Shaman.png" />
+    <None Remove="Assets\Class\Warlock.png" />
+    <Resource Include="Assets\Class\Warlock.png" />
+    <None Remove="Assets\Class\Warrior.png" />
+    <Resource Include="Assets\Class\Warrior.png" />
+    <Resource Include="Assets\Specializations\talentbg-death-knight-blood.jpg" />
+    <Resource Include="Assets\Specializations\talentbg-death-knight-frost.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-death-knight-unholy.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-demon-hunter-havoc.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-demon-hunter-vengeance.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-druid-balance.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-druid-feral.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-druid-guardian.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-druid-restoration.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-evoker-augmentation.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-evoker-devastation.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-evoker-preservation.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-hunter-beast-mastery.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-hunter-marksmanship.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-hunter-survival.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-mage-arcane.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-mage-fire.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-mage-frost.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-monk-brewmaster.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-monk-mistweaver.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-monk-windwalker.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-paladin-holy.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-paladin-protection.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-paladin-retribution.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-priest-discipline.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-priest-holy.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-priest-shadow.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-rogue-assassination.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-rogue-outlaw.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-rogue-subtlety.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-shaman-elemental.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-shaman-enhancement.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-shaman-restoration.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-warlock-affliction.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-warlock-demonology.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-warlock-destruction.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-warrior-arms.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-warrior-fury.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Specializations\talentbg-warrior-protection.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client.Core\Client.Core.csproj" />
+    <ProjectReference Include="..\Client.UI.Model\Client.UI.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Components\Player\SearchComponent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Components\PlayerSummaryComponent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>
