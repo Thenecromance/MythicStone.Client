@@ -167,9 +167,10 @@
             </Grid>
         </Grid>
 
-        <!-- <Image -->
-        <!--     HorizontalAlignment="Right" -->
-        <!--     VerticalAlignment="Bottom" -->
-        <!--     Source="/Assets/Banned.png" /> -->
+        <Image
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Visibility="{ Binding ViewModel.Info.BannedInfo , Converter={StaticResource NullToVisibilityConverter} }"
+            Source="/Assets/Banned.png" />
     </Grid>
 </Page>

@@ -1,8 +1,10 @@
 ﻿using System.Windows.Controls;
 using Client.Core;
 using Client.UI.Model.PlayerModel;
+using Client.UI.PedPool;
 using Client.UI.Services;
 using Client.UI.Views.Pages;
+using Microsoft.Extensions.Logging;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
@@ -10,10 +12,18 @@ namespace Client.UI.ViewModels.Pages;
 
 public partial class PlayerSearchViewModel : ViewModel
 {
-    public PlayerSearchViewModel(ClientService cli, INavigationService navigationService)
+    private readonly ILogger<PlayerSearchViewModel> _logger;
+
+    public PlayerSearchViewModel(
+        ClientService cli,
+        INavigationService navigationService,
+        ILogger<PlayerSearchViewModel> logger,
+        PlayerPool playerPool)
     {
         Cli = cli;
         NavigationService = navigationService;
+        _logger = logger;
+
         SearchHistoryListView.CollectionChanged += (sender, args) => { SearchHistoryVisible = true; };
     }
 
@@ -34,17 +44,12 @@ public partial class PlayerSearchViewModel : ViewModel
 
     #region SearchHistoryListView
 
-    private ObservableCollection<PlayerInfo?> _searchHistoryListView =
-#if !DEBUG
-        GenerateEmptyList();
-#else
-        new ObservableCollection<PlayerInfo?>();
-#endif
+    private ObservableCollection<PlayerInfo?> _searchHistoryListView = [];
 
     public ObservableCollection<PlayerInfo?> SearchHistoryListView
     {
         get => _searchHistoryListView;
-        set { SetProperty(ref _searchHistoryListView, value); }
+        set => SetProperty(ref _searchHistoryListView, value);
     }
 
     #endregion
@@ -55,16 +60,7 @@ public partial class PlayerSearchViewModel : ViewModel
 
     public bool SearchHistoryVisible
     {
-        get
-        {
-            if (_searchHistoryListView.Count > 0)
-            {
-                _searchHistoryVisible = true;
-            }
-
-            return _searchHistoryVisible;
-        }
-        set { _ = SetProperty(ref _searchHistoryVisible, value); }
+        set => _ = SetProperty(ref _searchHistoryVisible, value);
     }
 
     #endregion
@@ -76,7 +72,7 @@ public partial class PlayerSearchViewModel : ViewModel
 
     #region Suggestions
 
-    private ObservableCollection<string> _autoSuggestBoxSuggestions = new ObservableCollection<string>();
+    private ObservableCollection<string> _autoSuggestBoxSuggestions = [];
 
     public ObservableCollection<string> AutoSuggestBoxSuggestions
     {
@@ -117,9 +113,9 @@ public partial class PlayerSearchViewModel : ViewModel
     {
         var result = new List<string>();
         Data.ServerList.Where(x => x.StartsWith(server)).ToList().ForEach(x => result.Add(x));
-
         return result;
     }
+
 
     public async void SearchPlayer(string name, string realm)
     {
@@ -129,24 +125,51 @@ public partial class PlayerSearchViewModel : ViewModel
             {
                 if (_searchHistoryListView[i]?.Name != name) continue;
                 _searchHistoryListView.Move(i, 0);
-
                 return;
             }
 
-            _requestInProgress = true;
+
+            RequestInProgress = true;
             var player = await Cli.GetPlayerInfoAsync(name, realm);
 
             if (player != null && player.Class != 0)
             {
-                player.UUID = Guid.NewGuid().ToString();
                 SearchHistoryListView.Insert(0, player);
             }
 
-            _requestInProgress = false;
+            if (player?.BannedInfo is not null)
+            {
+                ShowBanMessageBox(player);
+            }
+
+            RequestInProgress = false;
         }
         catch (Exception e)
         {
-            _requestInProgress = false;
+            _logger.LogError($"Failed to search player with error:{e.Message}");
+            RequestInProgress = false;
+        }
+    }
+
+    private async void ShowBanMessageBox(PlayerInfo player)
+    {
+        try
+        {
+            var uiMessageBox = new Wpf.Ui.Controls.MessageBox
+            {
+                Title = "MythicStone.plus 黑名单警告！",
+                Content =
+                    $"该用户在你的黑名单中！\n" +
+                    $"角色名： {player.BannedInfo?.Name}\n " +
+                    $"服务器名：{player.BannedInfo?.Realm}\n" +
+                    $"原因：{player.BannedInfo?.Reason}",
+            };
+
+            _ = await uiMessageBox.ShowDialogAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Failed to show ban message box. with error:{e.Message}");
         }
     }
 

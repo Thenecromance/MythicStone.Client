@@ -18,7 +18,9 @@
                 <ResourceDictionary Source="Controls/PlayerDetailCard.xaml" />
                 <ResourceDictionary Source="Controls/DungeonListShow.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
+            
+            
+            <helpers:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
             <helpers:ThemeToIndexConverter x:Key="ThemeToIndexConverter" />
             <helpers:PaneDisplayModeToIndexConverter x:Key="PaneDisplayModeToIndexConverter" />
@@ -33,6 +35,7 @@
             <helpers:DungeonConverter x:Key="DungeonConverter" />
             <helpers:DungeonFinishStatus x:Key="DungeonFinishStatus" />
             <helpers:DungeonTimerConverter x:Key="DungeonTimerConverter" />
+
 
             <!--Color Converters-->
             <valueToColorConverter:EquipmentToColorConverter x:Key="EquipmentToColorConverter" />

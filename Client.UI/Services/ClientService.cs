@@ -116,9 +116,9 @@ public class ClientService(MythicStoneClientService cli, ISnackbarService snackb
         throw new NotImplementedException();
     }
 
-    public void AddUserToBlackListAsync(CancellationToken cancellationToken = default)
+    public void AddUserToBlackListAsync(string reason, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+      
     }
 
 

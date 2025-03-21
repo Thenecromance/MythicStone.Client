@@ -8,92 +8,61 @@ using Wpf.Ui;
 
 namespace Client.Core;
 
-// public class MythicSonteClientService : IClientService
-// {
-//     public string? ApiKey { get; set; }
-//
-//
-//     private readonly string baseUrl =
-// #if DEBUG
-//         "http://localhost:8080/api/v1";
-// #else
-//         "http://mythic_stone.plus/api/v1";
-// #endif
-//     private readonly HttpClient _cli;
-//
-//     public MythicSonteClientService()
-//     {
-//         _cli = new HttpClient();
-//     }
-//
-//
-//     public async Task<PlayerInfo> GetPlayerInfoAsync(string name, string realm)
-//     {
-//         var response = await SearchPlayerInfoAsync(name, realm);
-//         Console.WriteLine(response);
-//
-//         return response;
-//     }
-//
-//     public async Task<BestScore> GetBestScoreAsync(string name, string realm)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     public async Task<SelfScore> GetSelfScoreAsync(string name, string realm)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//
-//     private async Task<PlayerInfo> SearchPlayerInfoAsync(string name, string realm)
-//     {
-//         string url = $"{baseUrl}/player/info?name={name}&realm={realm}&apikey={ApiKey}";
-//         try
-//         {
-//             var response = await _cli.GetAsync(url);
-//             response.EnsureSuccessStatusCode();
-//
-//             var stream = await response.Content.ReadAsStreamAsync();
-//             return await JsonSerializer.DeserializeAsync<PlayerInfo>(stream);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//
-//             return new PlayerInfo();
-//         }
-//
-//         /*if (response.IsSuccessStatusCode)
-//         {
-//             var content = await response.Content.ReadAsStringAsync();
-//             return JsonSerializer.Deserialize<>(content);
-//         }*/
-//
-//         // return default;
-//     }
-// }
-
 public sealed class MythicStoneClientService : IClientService
 {
     private readonly HttpClient _cli = new HttpClient();
     private readonly ILogger<MythicStoneClientService> _logger;
 
-    private readonly string host =
-#if DEBUG
-        "http://localhost:8080/api/v1";
-#else
-            "http://mythic_stone.plus/api/v1";
-#endif
+
+    private string _host { get; }
+
+    private string _apiHost { get; }
+
 
     public MythicStoneClientService(ILogger<MythicStoneClientService> logger)
     {
-        _logger = logger;
+        _host =
+#if DEBUG
+            "http://localhost:8080";
+#else
+            "https://mythicstone.plus";
+#endif
+        _apiHost = $"{_host}/api/v1";
 
+
+        _logger = logger;
         _cli.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        Identification();
     }
 
     public void Dispose() => _cli?.Dispose();
+
+
+    private async void Identification()
+    {
+        try
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                { "uid", "3823e973-f729-4d60-959d-676d581c7eaa" }
+            };
+            var content = new FormUrlEncodedContent(parameters);
+            var response = await _cli.PostAsync($"{_host}/client/login",
+                content).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            var data = await response.Content.ReadFromJsonAsync<Response<Authorization>>();
+            if (data?.Data is not null)
+            {
+                _cli.DefaultRequestHeaders.Remove("Authorization");
+                _cli.DefaultRequestHeaders.Add("Authorization", data.Data.Token);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to identify");
+        }
+    }
 
 
     public async Task<Response<PlayerInfo?>> GetPlayerInfoAsync(string name, string server,
@@ -102,7 +71,7 @@ public sealed class MythicStoneClientService : IClientService
         try
         {
             var response = await _cli.GetAsync(
-                    $"{host}/player/info?name={name}&realm={server}", cancellationToken)
+                    $"{_apiHost}/player/info?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Response<PlayerInfo?>>(cancellationToken);
@@ -135,7 +104,7 @@ public sealed class MythicStoneClientService : IClientService
         try
         {
             var response = await _cli.GetAsync(
-                    $"{host}/player/period?name={name}&realm={server}", cancellationToken)
+                    $"{_apiHost}/player/period?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Response<PeriodRating?>>(cancellationToken);
@@ -153,7 +122,7 @@ public sealed class MythicStoneClientService : IClientService
         try
         {
             var response = await _cli.GetAsync(
-                    $"{host}/player/dungeon?name={name}&realm={server}", cancellationToken)
+                    $"{_apiHost}/player/dungeon?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Response<List<DungeonRating?>>>(cancellationToken);
@@ -175,7 +144,7 @@ public sealed class MythicStoneClientService : IClientService
         try
         {
             var response = await _cli.GetAsync(
-                    $"{host}/dungeon/list", cancellationToken)
+                    $"{_apiHost}/dungeon/list", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Response<List<DungeonInfo>?>>(cancellationToken);

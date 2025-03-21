@@ -82,6 +82,9 @@ namespace Client.UI.Model.PlayerModel
         [JsonPropertyName("op_score")]
         public int OpScore { get; set; }
 
+
+        [JsonPropertyName("banned_info")] public SuspendPlayer? BannedInfo { get; set; }
+
         public string UUID { get; set; }
     }
 }

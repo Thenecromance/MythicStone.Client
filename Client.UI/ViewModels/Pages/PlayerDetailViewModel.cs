@@ -11,16 +11,16 @@ namespace Client.UI.ViewModels.Pages;
 public class PlayerDetailViewModel
     : ViewModel
 {
-    public ClientService Cli { get; }
-    private PlayerSearchViewModel playerSearchViewModel { get; }
+    private ClientService _cli { get; }
+    private PlayerSearchViewModel _playerSearchViewModel { get; }
 
 
     public PlayerDetailViewModel(
         ClientService cli,
         PlayerSearchViewModel playerSearchViewModel)
     {
-        Cli = cli;
-        this.playerSearchViewModel = playerSearchViewModel;
+        _cli = cli;
+        this._playerSearchViewModel = playerSearchViewModel;
     }
 
     private async void InitializeAsync()
@@ -59,7 +59,7 @@ public class PlayerDetailViewModel
     public override void OnNavigatedTo()
     {
         base.OnNavigatedTo();
-        Info = playerSearchViewModel.GetCurrentPlayer();
+        Info = _playerSearchViewModel.GetCurrentPlayer();
 
         InitializeAsync();
     }
@@ -90,7 +90,7 @@ public class PlayerDetailViewModel
     private async void RequestCharacterPeriodDungeonRatingAsync()
     {
         PeriodRatings.Clear();
-        var period = await Cli.GetRoleThisPeriodScoreAsync(Info.Name, Info.Realm);
+        var period = await _cli.GetRoleThisPeriodScoreAsync(Info.Name, Info.Realm);
         if (period == null) return;
 
         foreach (var dungeon in period.Dungeons)
@@ -114,7 +114,7 @@ public class PlayerDetailViewModel
     private async void RequestCharacterDungeonRatingAsync()
     {
         RoleRatings.Clear();
-        var dungoenRating = await Cli.GetRoleDungeonInfoAsync(Info.Name, Info.Realm);
+        var dungoenRating = await _cli.GetRoleDungeonInfoAsync(Info.Name, Info.Realm);
         if (dungoenRating == null) return;
 
         // foreach (var dungeon in dungoenRating)
@@ -147,6 +147,13 @@ public class PlayerDetailViewModel
     }
 
     #endregion
+
+
+    public void AddCurrentPlayerToBlackList()
+    {
+        // _cli.AddUserToBlackListAsync();
+        // Info
+    }
 }
 
 
