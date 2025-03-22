@@ -50,7 +50,7 @@ public interface IBlackListService
 {
     Task<Response<List<SuspendPlayer>?>> GetUserBlackListAsync(CancellationToken cancellationToken = default);
 
-    void AddUserToBlackListAsync(string name, string realm, string reason,
+    Task<Message?> AddUserToBlackListAsync(string name, string realm, string reason,
         CancellationToken cancellationToken = default);
 
     void RemoveUserFromBlackListAsync(string name, string realm, CancellationToken cancellationToken = default);

@@ -1,0 +1,33 @@
+﻿<ui:ContentDialog
+    x:Class="Client.UI.Controls.AddToBlackListContentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:local="clr-namespace:Client.UI.Controls"
+    DefaultButton="Primary"
+    PrimaryButtonText="确定"
+    CloseButtonText="取消"
+    mc:Ignorable="d"
+    Title="确定添加至黑名单？" Height="1000" Width="1500">
+    <ui:ContentDialog.Resources>
+        <Style BasedOn="{StaticResource {x:Type ui:ContentDialog}}"
+               TargetType="{x:Type local:AddToBlackListContentDialog}" />
+    </ui:ContentDialog.Resources>
+
+    <Grid>
+        <StackPanel>
+            <ui:TextBlock
+                Name="WarningText"
+                Foreground="Red"
+                Text="原因不能为空"
+                Visibility="Collapsed" />
+            <ui:TextBlock
+                Foreground="LightGray"
+                Text="添加至黑名单后，该角色所属战网所有角色都会进入黑名单" />
+            <ui:TextBlock Text="原因：" />
+            <ui:TextBox Name="ReasonBox" />
+        </StackPanel>
+    </Grid>
+</ui:ContentDialog>

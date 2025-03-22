@@ -26,6 +26,9 @@ public sealed class MythicStoneClientService :
             "https://mythicstone.plus";
 #endif
 
+
+    private bool readyToUse = false;
+
     private string _apiHost { get; }
 
     public MythicStoneClientService(ILogger<MythicStoneClientService> logger)
@@ -40,6 +43,13 @@ public sealed class MythicStoneClientService :
 
     public void Dispose() => _cli?.Dispose();
 
+    private void WaitToReady()
+    {
+        while (!readyToUse)
+        {
+            Thread.Sleep(1000);
+        }
+    }
 
     private async void Identification()
     {
@@ -58,7 +68,7 @@ public sealed class MythicStoneClientService :
             if (data?.Data is not null)
             {
                 _cli.DefaultRequestHeaders.Remove("Authorization");
-                _cli.DefaultRequestHeaders.Add("Authorization", data.Data.Token);
+                readyToUse = true;
             }
         }
         catch (Exception e)
@@ -73,12 +83,12 @@ public sealed class MythicStoneClientService :
     {
         try
         {
+            WaitToReady();
             var response = await _cli.GetAsync(
                     $"{_apiHost}/player/info?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            _logger.LogInformation("Get player info success0");
             return await response.Content.ReadFromJsonAsync<Response<PlayerInfo?>>(cancellationToken);
         }
         catch (Exception e)
@@ -93,6 +103,7 @@ public sealed class MythicStoneClientService :
     {
         try
         {
+            WaitToReady();
             var response = await _cli.GetAsync(
                     $"{_apiHost}/player/period?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
@@ -112,6 +123,7 @@ public sealed class MythicStoneClientService :
     {
         try
         {
+            WaitToReady();
             var response = await _cli.GetAsync(
                     $"{_apiHost}/player/dungeon?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
@@ -129,6 +141,7 @@ public sealed class MythicStoneClientService :
     {
         try
         {
+            WaitToReady();
             var response = await _cli.GetAsync(
                     $"{_apiHost}/dungeon/list", cancellationToken)
                 .ConfigureAwait(false);
@@ -148,6 +161,7 @@ public sealed class MythicStoneClientService :
     {
         try
         {
+            WaitToReady();
             var response = await _cli.GetAsync(
                     $"{_apiHost}/blacklist", cancellationToken)
                 .ConfigureAwait(false);
@@ -162,11 +176,12 @@ public sealed class MythicStoneClientService :
     }
 
 
-    public async void AddUserToBlackListAsync(string name, string realm, string reason,
+    public async Task<Message?> AddUserToBlackListAsync(string name, string realm, string reason,
         CancellationToken cancellationToken = default)
     {
         try
         {
+            WaitToReady();
             var parameters = new Dictionary<string, string>
             {
                 { "name", name },
@@ -181,7 +196,7 @@ public sealed class MythicStoneClientService :
                     $"{_apiHost}/blacklist", content)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            // return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>();
+            return await response.Content.ReadFromJsonAsync<Message?>();
         }
         catch (Exception e)
         {
@@ -193,6 +208,7 @@ public sealed class MythicStoneClientService :
     public async void RemoveUserFromBlackListAsync(string name, string realm,
         CancellationToken cancellationToken = default)
     {
+        WaitToReady();
         var response = await _cli.DeleteAsync(
                 $"{_apiHost}/blacklist?name={name}&realm={realm}", cancellationToken)
             .ConfigureAwait(false);

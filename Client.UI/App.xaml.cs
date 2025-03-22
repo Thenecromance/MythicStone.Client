@@ -47,12 +47,12 @@ public partial class App
 
 
                 services.AddSingleton<Core.MythicStoneClientService>();
-
-                services.AddSingleton<DungeonService>();
-
-
                 services.AddSingleton<ClientService>();
+                
 
+                
+                
+                services.AddSingleton<DungeonService>();
                 services.AddSingleton<PlayerSearchPage>();
                 services.AddSingleton<PlayerSearchViewModel>();
                 // services.AddSingleton<PlayerDetailPage>();

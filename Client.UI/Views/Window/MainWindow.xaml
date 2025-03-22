@@ -49,6 +49,7 @@
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
 
+        <ContentPresenter x:Name="RootContentDialog" Grid.Row="0" />
 
         <ui:TitleBar
             x:Name="TitleBar"
@@ -56,6 +57,7 @@
             Grid.Row="0"
             CloseWindowByDoubleClickOnIcon="True">
         </ui:TitleBar>
+
 
     </Grid>
 </ui:FluentWindow>

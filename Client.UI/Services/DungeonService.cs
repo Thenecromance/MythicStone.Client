@@ -23,7 +23,7 @@ public class DungeonService
     private async void InitializeAsync()
     {
         Debug.WriteLine("Start to get dungeon list");
-        
+
         var dungeons = await Cli.GetDungeonListAsync();
         if (dungeons == null) return;
         foreach (var dungeon in dungeons)

@@ -7,8 +7,8 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:controls="clr-namespace:Client.UI.Controls"
       xmlns:bg="clr-namespace:Client.UI.Views.Components"
-      Title="Dashboard Page"
-      d:DataContext="{d:DesignInstance local:DashboardPage,
+      Title="Black list Page"
+      d:DataContext="{d:DesignInstance local:BlackListPage,
                                  IsDesignTimeCreatable=False}"
       d:DesignHeight="650"
       d:DesignWidth="800"
@@ -21,9 +21,32 @@
 
         <controls:PlayerDetailCard
             CardName="黑名单">
-            <Grid>
+            <ui:ListView
+                ItemsSource="{Binding ViewModel.SuspendPlayers, Mode=TwoWay }">
+                <ui:ListView.View>
+                    <ui:GridView>
+                        <GridViewColumn
+                            DisplayMemberBinding="{Binding Name  }"
+                            Width="100"
+                            Header="姓名" />
 
-            </Grid>
+                        <GridViewColumn
+                            DisplayMemberBinding="{Binding Realm}"
+                            Header="服务器"
+                            Width="100" />
+                        <GridViewColumn
+                            DisplayMemberBinding="{Binding Reason}"
+                            Header="原因"
+                            Width="100" />
+                        <!-- <GridViewColumn -->
+                        <!--     DisplayMemberBinding="{Binding IsComplete ,Converter={StaticResource DungeonFinishStatus}}" -->
+                        <!--     Header="完成状态" /> -->
+                        <!-- <GridViewColumn -->
+                        <!--     DisplayMemberBinding="{Binding Duration , Converter={StaticResource DungeonTimerConverter}}" -->
+                        <!--     Header="完成用时" /> -->
+                    </ui:GridView>
+                </ui:ListView.View>
+            </ui:ListView>
         </controls:PlayerDetailCard>
 
     </Grid>

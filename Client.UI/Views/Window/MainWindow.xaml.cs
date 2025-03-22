@@ -19,6 +19,7 @@ public partial class MainWindow : IWindow
     public MainWindow(
         MainWindowViewModel viewModel,
         INavigationService navigationService,
+        IContentDialogService contentDialogService,
         ISnackbarService snackbarService,
         ILogger<MainWindow> logger
     )
@@ -32,7 +33,7 @@ public partial class MainWindow : IWindow
 
         snackbarService.SetSnackbarPresenter(SnackbarPresenter);
         navigationService.SetNavigationControl(NavigationView);
-
+        contentDialogService.SetDialogHost(RootContentDialog);
 
         this._logger.LogInformation("MainWindow initialized");
         App.GetRequiredService<DungeonService>();

@@ -7,10 +7,19 @@ using Wpf.Ui.Controls;
 
 namespace Client.UI.Services;
 
-public class ClientService(MythicStoneClientService cli, ISnackbarService snackbarService)
+public class ClientService
 {
     private ControlAppearance _snackbarAppearance = ControlAppearance.Secondary;
     private int _snackbarTimeout = 2;
+
+    private MythicStoneClientService cli;
+    private ISnackbarService snackbarService;
+
+    public ClientService(MythicStoneClientService cli, ISnackbarService snackbarService)
+    {
+        this.cli = cli;
+        this.snackbarService = snackbarService;
+    }
 
     public void Dispose()
     {
@@ -131,8 +140,19 @@ public class ClientService(MythicStoneClientService cli, ISnackbarService snackb
         }
     }
 
-    public void AddUserToBlackListAsync(string reason, CancellationToken cancellationToken = default)
+    public async void AddUserToBlackListAsync(string name, string realm, string reason,
+        CancellationToken cancellationToken = default)
     {
+        try
+        {
+            var response = await cli.AddUserToBlackListAsync(name, realm, reason, cancellationToken);
+            ShowMessage(response);
+        }
+        catch (Exception e)
+        {
+            ShowException(e);
+            return;
+        }
     }
 
     #endregion

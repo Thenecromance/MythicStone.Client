@@ -1,25 +1,32 @@
-﻿using System.Windows.Navigation;
+﻿using System.Windows.Controls;
+using System.Windows.Navigation;
 using Client.Core;
+using Client.UI.Controls;
 using Client.UI.Model.Dungeon;
 using Client.UI.Model.PlayerModel;
 using Client.UI.Services;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Extensions;
+using TextBlock = Wpf.Ui.Controls.TextBlock;
 
 namespace Client.UI.ViewModels.Pages;
 
-public class PlayerDetailViewModel
+public partial class PlayerDetailViewModel
     : ViewModel
 {
     private ClientService _cli { get; }
     private PlayerSearchViewModel _playerSearchViewModel { get; }
+    private IContentDialogService _contentDialogService { get; }
 
 
     public PlayerDetailViewModel(
         ClientService cli,
+        IContentDialogService contentDialogService,
         PlayerSearchViewModel playerSearchViewModel)
     {
         _cli = cli;
+        _contentDialogService = contentDialogService;
         this._playerSearchViewModel = playerSearchViewModel;
     }
 
@@ -148,25 +155,40 @@ public class PlayerDetailViewModel
 
     #endregion
 
+    #region HeroLink
 
-    public void AddCurrentPlayerToBlackList()
+    [RelayCommand]
+    private async Task OnOpenPlayerLink(object sender)
     {
-        // _cli.AddUserToBlackListAsync();
-        // Info
+        Task.Run(() =>
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = Info.Link,
+                UseShellExecute = true
+            });
+        });
     }
+
+    #endregion
+
+
+    #region BlackList
+
+    private string _reason = string.Empty;
+
+    [RelayCommand]
+    private async Task OnAddBlackList(object sender)
+    {
+        var dialog =
+            new AddToBlackListContentDialog(_contentDialogService.GetDialogHost(), $"{Info.Name}-{Info.Realm}");
+        ;
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            _cli.AddUserToBlackListAsync(Info.Name, Info.Realm, dialog.Reason);
+        }
+    }
+
+    #endregion
 }
-
-
-/*
-
-{
-            "dungeon_id": 247,
-            "season": 14,
-            "completed_timestamp": 1742117923000,
-            "duration": 1995667,
-            "is_completed": false,
-            "keystone_level": 10,
-            "rating": 304.70328
-        },
-
-        */

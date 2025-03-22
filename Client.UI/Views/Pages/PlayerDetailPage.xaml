@@ -65,10 +65,10 @@
                         Margin="0,0,10,0"
                         CardName="大秘境分数">
                         <StackPanel>
-                            <comp:DataComp KeyName="当前分数 "
+                            <comp:DataComp KeyName="当前角色分数 "
                                            ValueColor="{Binding ViewModel.Info.Rating, Converter={StaticResource DungeonScoreToColorConverter}}"
                                            Value="{Binding ViewModel.Info.Rating}" />
-                            <comp:DataComp KeyName="最高分数 "
+                            <comp:DataComp KeyName="战网最高分数 "
                                            ValueColor="{Binding ViewModel.Info.BestRating, Converter={StaticResource DungeonScoreToColorConverter}}"
                                            Value="{Binding ViewModel.Info.BestRating}"
                                            ToolTipService.ToolTip="系统会自动记录该账号所属战网下最高M+分数" />
@@ -126,10 +126,12 @@
                                 <ui:Button
                                     Margin="0,0,10,0"
                                     Grid.Column="0"
-                                    Content="查看英雄榜" />
+                                    Command="{Binding ViewModel.OpenPlayerLinkCommand}"
+                                    Content="英雄榜" />
                                 <ui:Button
                                     Margin="0,0,10,0"
                                     Grid.Column="1"
+                                    Command="{Binding ViewModel.AddBlackListCommand}"
                                     Content="加入黑名单" />
                                 <ui:Button
                                     Margin="0,0,10,0"
