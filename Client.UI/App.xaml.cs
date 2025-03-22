@@ -1,4 +1,5 @@
-﻿using Client.UI.Services;
+﻿using Client.Core.Services;
+using Client.UI.Services;
 using Client.UI.Services.Contracts;
 using Client.UI.ViewModels;
 using Client.UI.ViewModels.Pages;
@@ -37,6 +38,9 @@ public partial class App
 
                 services.AddTransient<INLogConfigFactory, NLogConfigFactory>();
 
+                // profile settings 
+                services.AddSingleton<ProfileService>();
+
 
                 // Top-level pages
                 services.AddSingleton<DashboardPage>();
@@ -48,10 +52,8 @@ public partial class App
 
                 services.AddSingleton<Core.MythicStoneClientService>();
                 services.AddSingleton<ClientService>();
-                
 
-                
-                
+
                 services.AddSingleton<DungeonService>();
                 services.AddSingleton<PlayerSearchPage>();
                 services.AddSingleton<PlayerSearchViewModel>();

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Client.Core.Services;
 using Client.UI.Model.BlackList;
 using Client.UI.Model.Dungeon;
 using Client.UI.Model.PlayerModel;
@@ -17,7 +18,7 @@ public sealed class MythicStoneClientService :
 {
     private readonly HttpClient _cli = new HttpClient();
     private readonly ILogger<MythicStoneClientService> _logger;
-
+    private readonly ProfileService _profile;
 
     private readonly string _host =
 #if DEBUG
@@ -31,17 +32,32 @@ public sealed class MythicStoneClientService :
 
     private string _apiHost { get; }
 
-    public MythicStoneClientService(ILogger<MythicStoneClientService> logger)
+    public MythicStoneClientService(
+        ILogger<MythicStoneClientService> logger,
+        ProfileService profile
+    )
     {
         _apiHost = $"{_host}/api/v1";
-
+        _profile = profile;
         _logger = logger;
-        _cli.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        Identification();
+
+        Initialize();
     }
 
     public void Dispose() => _cli?.Dispose();
+
+
+    private void Initialize()
+    {
+        if (_profile.IsFirstTime())
+        {
+            _cli.DefaultRequestHeaders.Add("Authorization", "mythicstone.plus.user");
+        }
+
+        _cli.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        Identification();
+    }
 
     private void WaitToReady()
     {
@@ -57,8 +73,9 @@ public sealed class MythicStoneClientService :
         {
             var parameters = new Dictionary<string, string>
             {
-                { "uid", "3823e973-f729-4d60-959d-676d581c7eaa" }
-            };
+                { "uid", _profile.UID ?? "" },
+            };  
+
             var content = new FormUrlEncodedContent(parameters);
 
             var response = await _cli.PostAsync($"{_host}/client/login",
@@ -67,6 +84,7 @@ public sealed class MythicStoneClientService :
             var data = await response.Content.ReadFromJsonAsync<Response<Authorization>>();
             if (data?.Data is not null)
             {
+                _profile.UID = data.Data.UID;
                 _cli.DefaultRequestHeaders.Remove("Authorization");
                 readyToUse = true;
             }
