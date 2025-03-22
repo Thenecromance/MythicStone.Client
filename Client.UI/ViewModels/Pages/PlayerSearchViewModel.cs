@@ -17,8 +17,8 @@ public partial class PlayerSearchViewModel : ViewModel
     public PlayerSearchViewModel(
         ClientService cli,
         INavigationService navigationService,
-        ILogger<PlayerSearchViewModel> logger,
-        PlayerPool playerPool)
+        ILogger<PlayerSearchViewModel> logger /*,
+        PlayerPool playerPool*/)
     {
         Cli = cli;
         NavigationService = navigationService;
@@ -134,6 +134,7 @@ public partial class PlayerSearchViewModel : ViewModel
 
             if (player != null && player.Class != 0)
             {
+                player.UUID = Guid.NewGuid().ToString();
                 SearchHistoryListView.Insert(0, player);
             }
 

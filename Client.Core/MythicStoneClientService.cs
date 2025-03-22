@@ -14,21 +14,19 @@ public sealed class MythicStoneClientService : IClientService
     private readonly ILogger<MythicStoneClientService> _logger;
 
 
-    private string _host { get; }
+    private readonly string _host =
+#if DEBUG
+        "http://localhost:8080";
+#else
+            "https://mythicstone.plus";
+#endif
 
     private string _apiHost { get; }
 
 
     public MythicStoneClientService(ILogger<MythicStoneClientService> logger)
     {
-        _host =
-#if DEBUG
-            "http://localhost:8080";
-#else
-            "https://mythicstone.plus";
-#endif
         _apiHost = $"{_host}/api/v1";
-
 
         _logger = logger;
         _cli.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -48,6 +46,7 @@ public sealed class MythicStoneClientService : IClientService
                 { "uid", "3823e973-f729-4d60-959d-676d581c7eaa" }
             };
             var content = new FormUrlEncodedContent(parameters);
+
             var response = await _cli.PostAsync($"{_host}/client/login",
                 content).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
@@ -74,6 +73,8 @@ public sealed class MythicStoneClientService : IClientService
                     $"{_apiHost}/player/info?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
+
+            _logger.LogInformation("Get player info success0");
             return await response.Content.ReadFromJsonAsync<Response<PlayerInfo?>>(cancellationToken);
         }
         catch (Exception e)
@@ -81,21 +82,6 @@ public sealed class MythicStoneClientService : IClientService
             _logger.LogError(e, "Failed to get player info");
             throw;
         }
-    }
-
-    public void GetPlayerBestScoreAsync(string name, string server, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void GetRoleBestScoreAsync(string name, string server, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void GetRoleBestScoreDetailAsync(string name, string server, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<Response<PeriodRating?>> GetRoleThisPeriodScoreAsync(string name, string server,
@@ -107,11 +93,12 @@ public sealed class MythicStoneClientService : IClientService
                     $"{_apiHost}/player/period?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
+
             return await response.Content.ReadFromJsonAsync<Response<PeriodRating?>>(cancellationToken);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to get Dungeon info");
+            _logger.LogError(e, "fail to get period score");
             throw;
         }
     }
@@ -134,10 +121,6 @@ public sealed class MythicStoneClientService : IClientService
         }
     }
 
-    public async Task<List<string>> GetServerListAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<Response<List<DungeonInfo>?>> GetDungeonListAsync(CancellationToken cancellationToken = default)
     {

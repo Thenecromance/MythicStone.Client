@@ -7,8 +7,6 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:comp="clr-namespace:Client.UI.Views.Components.PlayerComp"
       xmlns:control="clr-namespace:Client.UI.Controls"
-      xmlns:dungeonModel="clr-namespace:Client.UI.Model.Dungeon;assembly=Client.UI.Model"
-      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       Title="PlayerInfoPage"
       d:DataContext="{d:DesignInstance local:PlayerDetailPage,
                            IsDesignTimeCreatable=False}"
@@ -90,8 +88,57 @@
 
                 </StackPanel>
 
-
+                <!-- Main Panel-->
                 <StackPanel Grid.Column="1" Margin="0,0,0,0">
+
+                    <control:PlayerDetailCard CardName="额外功能">
+                        <StackPanel>
+                            <!--Black list Information-->
+                            <Grid
+                                Visibility="{Binding ViewModel.Info.BannedInfo , Converter={StaticResource NullToVisibilityConverter} }">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Column="0"
+                                              Margin="0,0,10,0"
+                                              Text="{Binding ViewModel.Info.BannedInfo.Name}"
+                                              Foreground="Red" />
+                                <ui:TextBlock Grid.Column="1"
+                                              Margin="0,0,10,0"
+                                              Text="{Binding ViewModel.Info.BannedInfo.Realm}"
+                                              Foreground="Red" />
+                                <ui:TextBlock Grid.Column="2"
+                                              Margin="0,0,10,0"
+                                              Text="{Binding ViewModel.Info.BannedInfo.Reason}"
+                                              Foreground="Red" />
+                            </Grid>
+
+
+                            <!-- Option Layer-->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:Button
+                                    Margin="0,0,10,0"
+                                    Grid.Column="0"
+                                    Content="查看英雄榜" />
+                                <ui:Button
+                                    Margin="0,0,10,0"
+                                    Grid.Column="1"
+                                    Content="加入黑名单" />
+                                <ui:Button
+                                    Margin="0,0,10,0"
+                                    Grid.Column="2"
+                                    Content="Simulation" />
+                            </Grid>
+                        </StackPanel>
+
+                    </control:PlayerDetailCard>
                     <!-- ~1~Equipment Card@1@ -->
                     <!-- <control:PlayerDetailCard -->
                     <!--     CardName="装备"> -->
@@ -116,9 +163,6 @@
 
                     <!-- All Mythic Dungeon -->
                     <control:PlayerDetailCard
-                        Grid.Column="2"
-                        Grid.ColumnSpan="4"
-                        Grid.Row="1"
                         CardName="大秘境分数">
                         <ui:ListView ItemsSource="{Binding ViewModel.RoleRatings}">
                             <ui:ListView.View>
