@@ -9,7 +9,6 @@ using Wpf.Ui;
 
 namespace Client.UI.ViewModels.Pages;
 
-
 public partial class DashboardViewModel(INavigationService navigationService) : ViewModel
 {
     [RelayCommand]

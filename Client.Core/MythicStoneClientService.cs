@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Client.UI.Model.BlackList;
 using Client.UI.Model.Dungeon;
 using Client.UI.Model.PlayerModel;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,11 @@ using Wpf.Ui;
 
 namespace Client.Core;
 
-public sealed class MythicStoneClientService : IClientService
+public sealed class MythicStoneClientService :
+    IPlayerDataSearchService,
+    IStaticResourcesService,
+    IBlackListService,
+    IDisposable
 {
     private readonly HttpClient _cli = new HttpClient();
     private readonly ILogger<MythicStoneClientService> _logger;
@@ -22,7 +27,6 @@ public sealed class MythicStoneClientService : IClientService
 #endif
 
     private string _apiHost { get; }
-
 
     public MythicStoneClientService(ILogger<MythicStoneClientService> logger)
     {
@@ -121,7 +125,6 @@ public sealed class MythicStoneClientService : IClientService
         }
     }
 
-
     public async Task<Response<List<DungeonInfo>?>> GetDungeonListAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -140,13 +143,60 @@ public sealed class MythicStoneClientService : IClientService
     }
 
 
-    public void GetUserBlackListAsync(CancellationToken cancellationToken = default)
+    public async Task<Response<List<SuspendPlayer>?>> GetUserBlackListAsync(
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var response = await _cli.GetAsync(
+                    $"{_apiHost}/blacklist", cancellationToken)
+                .ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to get black list");
+            throw;
+        }
     }
 
-    public void AddUserToBlackListAsync(CancellationToken cancellationToken = default)
+
+    public async void AddUserToBlackListAsync(string name, string realm, string reason,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                { "name", name },
+                { "realm", realm },
+                { "reason", reason },
+            };
+
+            var content = new FormUrlEncodedContent(parameters);
+
+
+            var response = await _cli.PostAsync(
+                    $"{_apiHost}/blacklist", content)
+                .ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            // return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to get black list");
+            throw;
+        }
+    }
+
+    public async void RemoveUserFromBlackListAsync(string name, string realm,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _cli.DeleteAsync(
+                $"{_apiHost}/blacklist?name={name}&realm={realm}", cancellationToken)
+            .ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+        // return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>();
     }
 }

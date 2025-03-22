@@ -18,5 +18,13 @@
       mc:Ignorable="d">
     <Grid>
         <bg:BackGroundComponent />
+
+        <controls:PlayerDetailCard
+            CardName="黑名单">
+            <Grid>
+
+            </Grid>
+        </controls:PlayerDetailCard>
+
     </Grid>
 </Page>

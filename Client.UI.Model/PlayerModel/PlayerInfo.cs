@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Client.UI.Model.BlackList;
 
 namespace Client.UI.Model.PlayerModel
 {

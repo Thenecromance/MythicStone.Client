@@ -1,17 +1,8 @@
-﻿using Client.UI.Model.Dungeon;
+﻿using Client.UI.Model.BlackList;
+using Client.UI.Model.Dungeon;
 using Client.UI.Model.PlayerModel;
 
 namespace Client.Core;
-
-public interface IClientService :
-    IPlayerDataSearchService,
-    IStaticResourcesService,
-    IBlackListService,
-    IDisposable
-{
-    // Task<IEnumerable<PlayerInfo>> GetPlayerInfoAsync(KeyValuePair<string, string> lists,
-    //     CancellationToken cancellationToken = default);
-}
 
 public interface IPlayerDataSearchService
 {
@@ -57,7 +48,10 @@ public interface IStaticResourcesService
 
 public interface IBlackListService
 {
-    void GetUserBlackListAsync(CancellationToken cancellationToken = default);
+    Task<Response<List<SuspendPlayer>?>> GetUserBlackListAsync(CancellationToken cancellationToken = default);
 
-    void AddUserToBlackListAsync(CancellationToken cancellationToken = default);
+    void AddUserToBlackListAsync(string name, string realm, string reason,
+        CancellationToken cancellationToken = default);
+
+    void RemoveUserFromBlackListAsync(string name, string realm, CancellationToken cancellationToken = default);
 }

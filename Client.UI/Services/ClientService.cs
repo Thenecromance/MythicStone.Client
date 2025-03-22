@@ -1,4 +1,5 @@
 ﻿using Client.Core;
+using Client.UI.Model.BlackList;
 using Client.UI.Model.Dungeon;
 using Client.UI.Model.PlayerModel;
 using Wpf.Ui;
@@ -111,15 +112,30 @@ public class ClientService(MythicStoneClientService cli, ISnackbarService snackb
         }
     }
 
-    public void GetUserBlackListAsync(CancellationToken cancellationToken = default)
+    #region Black list system
+
+    public async Task<List<SuspendPlayer>?> GetUserBlackListAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var response = await cli.GetUserBlackListAsync(cancellationToken);
+
+            ShowMessage(response.Message);
+
+            return response.Data;
+        }
+        catch (Exception e)
+        {
+            ShowException(e);
+            return null;
+        }
     }
 
     public void AddUserToBlackListAsync(string reason, CancellationToken cancellationToken = default)
     {
-      
     }
+
+    #endregion
 
 
     private void ShowMessage(Message? message)
