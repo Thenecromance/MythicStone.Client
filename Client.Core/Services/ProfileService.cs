@@ -14,10 +14,21 @@ public class ProfileService : LocalDataService, IProfileService
 {
     private static string _profilePath => "profile.json";
     private Profile _profile = new Profile();
-    
-    public string UID
+
+    public string? UID
     {
-        get => _profile.UserUID;
+        get
+        {
+            if (Exists(_profilePath))
+            {
+                _profile = Parse<Profile>(_profilePath);
+                return _profile.UserUID;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
         set
         {
             _profile.UserUID = value;
@@ -28,11 +39,15 @@ public class ProfileService : LocalDataService, IProfileService
     public ProfileService() : base()
     {
         _profile = Parse<Profile>(_profilePath);
+        if (_profile == null)
+        {
+            _profile = new Profile();
+        }
     }
 
     public bool IsFirstTime()
     {
-        return !HasProfile();
+        return !HasProfile() || string.IsNullOrEmpty(UID);
     }
 
     public bool HasProfile()

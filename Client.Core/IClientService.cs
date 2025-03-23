@@ -13,7 +13,7 @@ public interface IPlayerDataSearchService
     /// <param name="server"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Response<PlayerInfo?>> GetPlayerInfoAsync(string name, string server,
+    Task<Response<PlayerInfo?>?> GetPlayerInfoAsync(string name, string server,
         CancellationToken cancellationToken = default);
 
     // /// <summary>
@@ -34,21 +34,21 @@ public interface IPlayerDataSearchService
     //
     // void GetRoleBestScoreDetailAsync(string name, string server, CancellationToken cancellationToken = default);
 
-    Task<Response<PeriodRating?>> GetRoleThisPeriodScoreAsync(string name, string server,
+    Task<Response<PeriodRating?>?> GetRoleThisPeriodScoreAsync(string name, string server,
         CancellationToken cancellationToken = default);
 
-    Task<Response<List<DungeonRating?>>> GetRoleDungeonInfoAsync(string name, string server,
+    Task<Response<List<DungeonRating?>>?> GetRoleDungeonInfoAsync(string name, string server,
         CancellationToken cancellationToken = default);
 }
 
 public interface IStaticResourcesService
 {
-    Task<Response<List<DungeonInfo>?>> GetDungeonListAsync(CancellationToken cancellationToken = default);
+    Task<Response<List<DungeonInfo>?>?> GetDungeonListAsync(CancellationToken cancellationToken = default);
 }
 
 public interface IBlackListService
 {
-    Task<Response<List<SuspendPlayer>?>> GetUserBlackListAsync(CancellationToken cancellationToken = default);
+    Task<Response<List<SuspendPlayer>?>?> GetUserBlackListAsync(CancellationToken cancellationToken = default);
 
     Task<Message?> AddUserToBlackListAsync(string name, string realm, string reason,
         CancellationToken cancellationToken = default);

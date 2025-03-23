@@ -17,37 +17,76 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d">
     <Grid>
-        <bg:BackGroundComponent />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- Title -->
+        <Border
+            Grid.Row="0"
+            Height="200"
+            CornerRadius="8">
+            <Border.Background>
+                <ImageBrush
+                    ImageSource="../../Assets/main_page_bg.png"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    Stretch="UniformToFill" />
+            </Border.Background>
 
-        <controls:PlayerDetailCard
-            CardName="黑名单">
-            <ui:ListView
-                ItemsSource="{Binding ViewModel.SuspendPlayers, Mode=TwoWay }">
-                <ui:ListView.View>
-                    <ui:GridView>
-                        <GridViewColumn
-                            DisplayMemberBinding="{Binding Name  }"
-                            Width="100"
-                            Header="姓名" />
+            <Border CornerRadius="8">
+                <Grid>
+                    <StackPanel
+                        Margin="48,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="Transparent">
+                        <ui:TextBlock
+                            FontTypography="Title"
+                            Foreground="#FFFFFF"
+                            Text="黑名单" />
+                        <!-- <ui:TextBlock -->
+                        <!--     FontTypography="Subtitle" -->
+                        <!--     Foreground="#B7FFFFFF" -->
+                        <!--     Text="" /> -->
+                    </StackPanel>
 
-                        <GridViewColumn
-                            DisplayMemberBinding="{Binding Realm}"
-                            Header="服务器"
-                            Width="100" />
-                        <GridViewColumn
-                            DisplayMemberBinding="{Binding Reason}"
-                            Header="原因"
-                            Width="100" />
-                        <!-- <GridViewColumn -->
-                        <!--     DisplayMemberBinding="{Binding IsComplete ,Converter={StaticResource DungeonFinishStatus}}" -->
-                        <!--     Header="完成状态" /> -->
-                        <!-- <GridViewColumn -->
-                        <!--     DisplayMemberBinding="{Binding Duration , Converter={StaticResource DungeonTimerConverter}}" -->
-                        <!--     Header="完成用时" /> -->
-                    </ui:GridView>
-                </ui:ListView.View>
-            </ui:ListView>
-        </controls:PlayerDetailCard>
+                </Grid>
+            </Border>
+        </Border>
 
+        <Grid Grid.Row="1">
+
+            <controls:PlayerDetailCard
+                CardName="黑名单">
+                <ui:ListView
+                    ItemsSource="{Binding ViewModel.SuspendPlayers, Mode=TwoWay }">
+                    <ui:ListView.View>
+                        <ui:GridView>
+                            <GridViewColumn
+                                DisplayMemberBinding="{Binding Name  }"
+                                Width="100"
+                                Header="姓名" />
+
+                            <GridViewColumn
+                                DisplayMemberBinding="{Binding Realm}"
+                                Header="服务器"
+                                Width="100" />
+                            <GridViewColumn
+                                DisplayMemberBinding="{Binding Reason}"
+                                Header="原因"
+                                Width="100" />
+                            <!-- <GridViewColumn -->
+                            <!--     DisplayMemberBinding="{Binding IsComplete ,Converter={StaticResource DungeonFinishStatus}}" -->
+                            <!--     Header="完成状态" /> -->
+                            <!-- <GridViewColumn -->
+                            <!--     DisplayMemberBinding="{Binding Duration , Converter={StaticResource DungeonTimerConverter}}" -->
+                            <!--     Header="完成用时" /> -->
+                        </ui:GridView>
+                    </ui:ListView.View>
+                </ui:ListView>
+            </controls:PlayerDetailCard>
+
+        </Grid>
     </Grid>
 </Page>

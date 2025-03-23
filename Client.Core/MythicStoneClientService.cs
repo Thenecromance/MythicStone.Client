@@ -26,18 +26,18 @@ public sealed class MythicStoneClientService(
 #endif
 
 
-    private bool readyToUse = false;
+    // public bool _readyToUse = false;
 
-    private string _apiHost { get; } = $"{_host}/api/v1";
+    private string ApiHost { get; } = $"{_host}/api/v1";
 
 
-    public async Task<Response<PlayerInfo?>> GetPlayerInfoAsync(string name, string server,
+    public async Task<Response<PlayerInfo?>?> GetPlayerInfoAsync(string name, string server,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var response = await httpClientFactory.CreateClient("PlayerInfo").GetAsync(
-                    $"{_apiHost}/player/info?name={name}&realm={server}", cancellationToken)
+                    $"{ApiHost}/player/info?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
@@ -50,13 +50,13 @@ public sealed class MythicStoneClientService(
         }
     }
 
-    public async Task<Response<PeriodRating?>> GetRoleThisPeriodScoreAsync(string name, string server,
+    public async Task<Response<PeriodRating?>?> GetRoleThisPeriodScoreAsync(string name, string server,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var response = await httpClientFactory.CreateClient("PeriodScore").GetAsync(
-                    $"{_apiHost}/player/period?name={name}&realm={server}", cancellationToken)
+                    $"{ApiHost}/player/period?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
@@ -69,13 +69,13 @@ public sealed class MythicStoneClientService(
         }
     }
 
-    public async Task<Response<List<DungeonRating?>>> GetRoleDungeonInfoAsync(string name, string server,
+    public async Task<Response<List<DungeonRating?>>?> GetRoleDungeonInfoAsync(string name, string server,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var response = await httpClientFactory.CreateClient("RoleDungeon").GetAsync(
-                    $"{_apiHost}/player/dungeon?name={name}&realm={server}", cancellationToken)
+                    $"{ApiHost}/player/dungeon?name={name}&realm={server}", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Response<List<DungeonRating?>>>(cancellationToken);
@@ -87,12 +87,12 @@ public sealed class MythicStoneClientService(
         }
     }
 
-    public async Task<Response<List<DungeonInfo>?>> GetDungeonListAsync(CancellationToken cancellationToken = default)
+    public async Task<Response<List<DungeonInfo>?>?> GetDungeonListAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             var response = await httpClientFactory.CreateClient("DungeonList").GetAsync(
-                    $"{_apiHost}/dungeon/list", cancellationToken)
+                    $"{ApiHost}/dungeon/list", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Response<List<DungeonInfo>?>>(cancellationToken);
@@ -105,22 +105,17 @@ public sealed class MythicStoneClientService(
     }
 
 
-    public async Task<Response<List<SuspendPlayer>?>> GetUserBlackListAsync(
+    public async Task<Response<List<SuspendPlayer>?>?> GetUserBlackListAsync(
         CancellationToken cancellationToken = default)
     {
         try
         {
             var response = await httpClientFactory.CreateClient("BlackList").GetAsync(
-                    $"{_apiHost}/blacklist", cancellationToken)
+                    $"{ApiHost}/blacklist", cancellationToken)
                 .ConfigureAwait(false);
-            // response.EnsureSuccessStatusCode();
-            logger.LogInformation($"{response.StatusCode}");
 
-            var data = await response.Content.ReadAsStringAsync();
-            logger.LogInformation($"{data}");
-            response.Content.ReadAsStringAsync().ContinueWith(task => logger.LogInformation(task.Result));
-            return null;
-            return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>();
+            return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>(
+                cancellationToken: cancellationToken);
         }
         catch (Exception e)
         {
@@ -146,7 +141,7 @@ public sealed class MythicStoneClientService(
 
 
             var response = await httpClientFactory.CreateClient("BlackList").PostAsync(
-                    $"{_apiHost}/blacklist", content, cancellationToken)
+                    $"{ApiHost}/blacklist", content, cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Message?>(cancellationToken);
@@ -162,7 +157,7 @@ public sealed class MythicStoneClientService(
         CancellationToken cancellationToken = default)
     {
         var response = await httpClientFactory.CreateClient("BlackList").DeleteAsync(
-                $"{_apiHost}/blacklist?name={name}&realm={realm}", cancellationToken)
+                $"{ApiHost}/blacklist?name={name}&realm={realm}", cancellationToken)
             .ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
         // return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>();

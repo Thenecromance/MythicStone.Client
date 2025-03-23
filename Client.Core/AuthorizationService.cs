@@ -7,14 +7,14 @@ namespace Client.Core;
 
 public class AuthorizationService
 {
-    public string UID { get; set; }
+    public string? UID { get; set; }
 
 
     private string _authToken = string.Empty;
     public string Token => _authToken;
 
     private readonly ILogger _logger;
-    private readonly ProfileService _profile;
+    private readonly ProfileService _profile = new();
 
     private bool _isAuthenticated = false;
     public bool IsAuthenticated => _isAuthenticated;
@@ -32,14 +32,13 @@ public class AuthorizationService
     private readonly SemaphoreSlim _authLock = new(1, 1);
 
     public AuthorizationService(
-        ILogger<AuthorizationService> logger,
-        ProfileService profile)
+        ILogger<AuthorizationService> logger)
     {
         _logger = logger;
         _logger.LogInformation("Initializing Authorization Service");
 
-        _profile = profile;
-        UID = profile.UID;
+
+        UID = _profile.UID;
     }
 
 
@@ -89,7 +88,7 @@ public class AuthorizationService
                 return;
             }
 
-            var authData = new Dictionary<string, string>() { { "uid", UID } };
+            var authData = new Dictionary<string, string?>() { { "uid", UID } };
             var content = new FormUrlEncodedContent(authData);
             var response = await _cli.PostAsync($"{_host}/client/login", content).ConfigureAwait(false);
 
@@ -152,7 +151,7 @@ public class AuthorizationService
             }
 
 
-            var response = await _cli.PostAsync($"{_host}/client/register", new FormUrlEncodedContent(null!),
+            var response = await _cli.PostAsync($"{_host}/client/register", null,
                 CancellationToken.None).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
@@ -186,6 +185,10 @@ public class AuthorizationService
             _profile.UID = data.Data.UID;
 
             _isAuthenticated = true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to authenticate");
         }
         finally
         {

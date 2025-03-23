@@ -42,7 +42,6 @@ public partial class App
                 services.AddTransient<INLogConfigFactory, NLogConfigFactory>();
 
                 // profile settings 
-                services.AddSingleton<ProfileService>();
                 services.AddSingleton<AuthorizationService>();
                 services.AddSingleton<IHttpClientFactory, HttpClientFactory>();
 

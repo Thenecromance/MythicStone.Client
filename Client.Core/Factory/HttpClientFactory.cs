@@ -27,7 +27,7 @@ public class HttpClientFactory : IHttpClientFactory
     }
 
     private string Token { get; set; } = string.Empty;
-    private string ClientId { get; set; } = string.Empty;
+    private string? ClientId { get; set; } = string.Empty;
 
 
     private readonly AuthorizationService _auth;
