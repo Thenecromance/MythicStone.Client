@@ -12,7 +12,10 @@ public partial class BlackListPage : Page
     {
         ViewModel = vm;
         InitializeComponent();
-        
+
         Loaded += (s, e) => DataContext = this;
     }
+
+
+
 }

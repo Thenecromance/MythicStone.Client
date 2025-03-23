@@ -186,7 +186,19 @@ public partial class PlayerDetailViewModel
         var result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
-            _cli.AddUserToBlackListAsync(Info.Name, Info.Realm, dialog.Reason);
+            var opResult = await _cli.AddUserToBlackListAsync(Info.Name, Info.Realm, dialog.Reason);
+            if (opResult != null && opResult.Success == false)
+            {
+                var uiMessageBox = new Wpf.Ui.Controls.MessageBox
+                {
+                    Title = "警告！",
+                    Content =
+                        $"{Info.Name} 加入黑名单失败",
+                    PrimaryButtonText = "确定",
+                    SecondaryButtonText = "取消"
+                };
+                await uiMessageBox.ShowDialogAsync();
+            }
         }
     }
 

@@ -125,7 +125,8 @@ public sealed class MythicStoneClientService(
     }
 
 
-    public async Task<Message?> AddUserToBlackListAsync(string name, string realm, string reason,
+    public async Task<Response<BlackListOperationResult>?> AddUserToBlackListAsync(string name, string realm,
+        string reason,
         CancellationToken cancellationToken = default)
     {
         try
@@ -144,7 +145,7 @@ public sealed class MythicStoneClientService(
                     $"{ApiHost}/blacklist", content, cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Message?>(cancellationToken);
+            return await response.Content.ReadFromJsonAsync<Response<BlackListOperationResult>>(cancellationToken);
         }
         catch (Exception e)
         {
@@ -153,13 +154,13 @@ public sealed class MythicStoneClientService(
         }
     }
 
-    public async void RemoveUserFromBlackListAsync(string name, string realm,
+    public async Task<Response<BlackListOperationResult>?> RemoveUserFromBlackListAsync(string name, string realm,
         CancellationToken cancellationToken = default)
     {
         var response = await httpClientFactory.CreateClient("BlackList").DeleteAsync(
                 $"{ApiHost}/blacklist?name={name}&realm={realm}", cancellationToken)
             .ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
-        // return await response.Content.ReadFromJsonAsync<Response<List<SuspendPlayer>?>>();
+        return await response.Content.ReadFromJsonAsync<Response<BlackListOperationResult>>();
     }
 }

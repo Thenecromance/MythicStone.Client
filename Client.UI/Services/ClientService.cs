@@ -135,18 +135,35 @@ public class ClientService
         }
     }
 
-    public async void AddUserToBlackListAsync(string name, string realm, string reason,
+    public async Task<BlackListOperationResult> AddUserToBlackListAsync(string name, string realm, string reason,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var response = await cli.AddUserToBlackListAsync(name, realm, reason, cancellationToken);
-            ShowMessage(response);
+            ShowMessage(response.Message);
+            return response.Data;
         }
         catch (Exception e)
         {
             ShowException(e);
-            return;
+            throw;
+        }
+    }
+
+    public async Task<BlackListOperationResult> RemoveUserFromBlackListAsync(string name, string realm,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var response = await cli.RemoveUserFromBlackListAsync(name, realm, cancellationToken);
+            ShowMessage(response.Message);
+            return response.Data;
+        }
+        catch (Exception e)
+        {
+            ShowException(e);
+            throw;
         }
     }
 
@@ -178,7 +195,6 @@ public class ClientService
             _ => ControlAppearance.Primary,
         };
     }
-
 
     private void ShowException(Exception e)
     {

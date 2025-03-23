@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Client.UI.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:controls="clr-namespace:Client.UI.Controls"
-      xmlns:bg="clr-namespace:Client.UI.Views.Components"
+      xmlns:blacklist="clr-namespace:Client.UI.Model.BlackList;assembly=Client.UI.Model"
       Title="Black list Page"
       d:DataContext="{d:DesignInstance local:BlackListPage,
                                  IsDesignTimeCreatable=False}"
@@ -61,32 +61,75 @@
                 CardName="黑名单">
                 <ui:ListView
                     ItemsSource="{Binding ViewModel.SuspendPlayers, Mode=TwoWay }">
-                    <ui:ListView.View>
-                        <ui:GridView>
-                            <GridViewColumn
-                                DisplayMemberBinding="{Binding Name  }"
-                                Width="100"
-                                Header="姓名" />
+                    <ui:ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type blacklist:SuspendPlayer}">
 
-                            <GridViewColumn
-                                DisplayMemberBinding="{Binding Realm}"
-                                Header="服务器"
-                                Width="100" />
-                            <GridViewColumn
-                                DisplayMemberBinding="{Binding Reason}"
-                                Header="原因"
-                                Width="100" />
-                            <!-- <GridViewColumn -->
-                            <!--     DisplayMemberBinding="{Binding IsComplete ,Converter={StaticResource DungeonFinishStatus}}" -->
-                            <!--     Header="完成状态" /> -->
-                            <!-- <GridViewColumn -->
-                            <!--     DisplayMemberBinding="{Binding Duration , Converter={StaticResource DungeonTimerConverter}}" -->
-                            <!--     Header="完成用时" /> -->
-                        </ui:GridView>
-                    </ui:ListView.View>
+                            <ui:CardControl>
+                                <ui:CardControl.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="200" />
+                                        </Grid.ColumnDefinitions>
+                                        <ui:TextBlock
+                                            Grid.Column="0"
+                                            FontTypography="Title"
+                                            Text="{Binding Name}" />
+
+                                        <ui:TextBlock
+                                            Grid.Column="1"
+                                            FontTypography="Subtitle"
+                                            Text="{Binding Realm}" />
+
+                                        <ui:TextBlock
+                                            Grid.Column="2"
+                                            FontTypography="Subtitle"
+                                            Text="{Binding Reason}" />
+
+                                    </Grid>
+                                </ui:CardControl.Header>
+                                <ui:CardControl.Content>
+
+                                    <ui:Button
+                                        Grid.Column="3"
+                                        Content="从黑名单移除"
+                                        Command="{Binding DataContext.ViewModel.RemovePlayerFromBlackListCommand, RelativeSource={RelativeSource AncestorType=ui:ListView}}"
+                                        CommandParameter="{Binding Name}" />
+                                </ui:CardControl.Content>
+                            </ui:CardControl>
+
+                        </DataTemplate>
+                    </ui:ListView.ItemTemplate>
+                    <!-- <ui:ListView.View> -->
+                    <!--      -->
+                    <!--         <ui:GridView> -->
+                    <!--             <GridViewColumn -->
+                    <!--                 DisplayMemberBinding="{Binding Name  }" -->
+                    <!--                 Width="100" -->
+                    <!--                 Header="姓名" /> -->
+                    <!-- -->
+                    <!--             <GridViewColumn -->
+                    <!--                 DisplayMemberBinding="{Binding Realm}" -->
+                    <!--                 Header="服务器" -->
+                    <!--                 Width="100" /> -->
+                    <!--             <GridViewColumn -->
+                    <!--                 DisplayMemberBinding="{Binding Reason}" -->
+                    <!--                 Header="原因" -->
+                    <!--                 Width="100" /> -->
+                    <!-- -->
+                    <!-- -->
+                    <!--     ~1~ <GridViewColumn @1@ -->
+                    <!--     ~1~     DisplayMemberBinding="{Binding IsComplete ,Converter={StaticResource DungeonFinishStatus}}" @1@ -->
+                    <!--     ~1~     Header="完成状态" /> @1@ -->
+                    <!--     ~1~ <GridViewColumn @1@ -->
+                    <!--     ~1~     DisplayMemberBinding="{Binding Duration , Converter={StaticResource DungeonTimerConverter}}" @1@ -->
+                    <!--     ~1~     Header="完成用时" /> @1@ -->
+                    <!--     </ui:GridView> -->
+                    <!-- </ui:ListView.View> -->
                 </ui:ListView>
             </controls:PlayerDetailCard>
-
         </Grid>
     </Grid>
 </Page>
