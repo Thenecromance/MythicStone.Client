@@ -21,11 +21,6 @@ public class ClientService
         this.snackbarService = snackbarService;
     }
 
-    public void Dispose()
-    {
-        cli.Dispose();
-    }
-
 
     public async Task<PlayerInfo?> GetPlayerInfoAsync(string name, string server,
         CancellationToken cancellationToken = default)

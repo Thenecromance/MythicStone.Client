@@ -1,4 +1,7 @@
-﻿using Client.Core.Services;
+﻿using System.Net.Http;
+using Client.Core;
+using Client.Core.Factory;
+using Client.Core.Services;
 using Client.UI.Services;
 using Client.UI.Services.Contracts;
 using Client.UI.ViewModels;
@@ -40,6 +43,8 @@ public partial class App
 
                 // profile settings 
                 services.AddSingleton<ProfileService>();
+                services.AddSingleton<AuthorizationService>();
+                services.AddSingleton<IHttpClientFactory, HttpClientFactory>();
 
 
                 // Top-level pages

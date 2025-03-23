@@ -14,7 +14,7 @@ public class ProfileService : LocalDataService, IProfileService
 {
     private static string _profilePath => "profile.json";
     private Profile _profile = new Profile();
-
+    
     public string UID
     {
         get => _profile.UserUID;
@@ -27,7 +27,7 @@ public class ProfileService : LocalDataService, IProfileService
 
     public ProfileService() : base()
     {
-        Parse<Profile>(_profilePath);
+        _profile = Parse<Profile>(_profilePath);
     }
 
     public bool IsFirstTime()
