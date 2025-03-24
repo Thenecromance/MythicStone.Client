@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using Client.Connector.Simc.ViewModels;
+using Client.Connector.Simc.Views;
 using Client.Core;
 using Client.Core.Factory;
 using Client.Core.Services;
@@ -63,6 +65,16 @@ public partial class App
                 services.AddSingleton<PlayerSearchViewModel>();
                 // services.AddSingleton<PlayerDetailPage>();
                 services.AddSingleton<PlayerDetailViewModel>();
+
+
+                {
+                    // Simc request from server 
+                    services.AddSingleton<SimcRequestInfoPage>();
+                    services.AddSingleton<SimcRequestViewModel>();
+                    //simc addon import
+                    services.AddSingleton<SimcAddonImportPage>();
+                    services.AddSingleton<SimcAddonImportViewModel>();
+                }
 
 
                 // All other pages and view models

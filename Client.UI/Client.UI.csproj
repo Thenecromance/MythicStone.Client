@@ -226,6 +226,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Client.Connector.Simc\Client.Connector.Simc.csproj" />
     <ProjectReference Include="..\Client.Core\Client.Core.csproj" />
     <ProjectReference Include="..\Client.UI.Model\Client.UI.Model.csproj" />
   </ItemGroup>

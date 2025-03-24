@@ -15,7 +15,4 @@ public partial class BlackListPage : Page
 
         Loaded += (s, e) => DataContext = this;
     }
-
-
-
 }
