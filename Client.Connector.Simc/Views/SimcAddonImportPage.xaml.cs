@@ -19,7 +19,7 @@ public partial class SimcAddonImportPage : Page
     {
         TextRange textRange = new TextRange(ProfileTextBox.Document.ContentStart, ProfileTextBox.Document.ContentEnd);
         ViewModel.Profile = textRange.Text;
-        Console.WriteLine(ViewModel.Profile);
+        ViewModel.Test();
     }
 
 }
