@@ -20,12 +20,8 @@ public class AuthorizationService
     public bool IsAuthenticated => _isAuthenticated;
 
 
-    private readonly string _host =
-#if DEBUG
-        "http://localhost:8080";
-#else
-            "https://mythicstone.plus";
-#endif
+    private readonly string _host = "https://www.mythicstone.plus";
+      //"http://localhost:8080";
 
 
     private readonly HttpClient _cli = new();

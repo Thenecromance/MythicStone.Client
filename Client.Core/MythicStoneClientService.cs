@@ -18,12 +18,12 @@ public sealed class MythicStoneClientService(
         IStaticResourcesService,
         IBlackListService
 {
-    private static string _host =
-#if DEBUG
-        "http://localhost:8080";
-#else
-            "https://mythicstone.plus";
-#endif
+    private static string _host = "https://www.mythicstone.plus";
+//#if DEBUG
+//        "http://localhost:8080";
+//#else
+//            "https://www.mythicstone.plus";
+//#endif
 
 
     // public bool _readyToUse = false;
@@ -95,6 +95,8 @@ public sealed class MythicStoneClientService(
                     $"{ApiHost}/dungeon/list", cancellationToken)
                 .ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
+            //var data = await response.Content.ReadAsStringAsync(cancellationToken);
+            //logger.LogInformation(data);
             return await response.Content.ReadFromJsonAsync<Response<List<DungeonInfo>?>>(cancellationToken);
         }
         catch (Exception e)
